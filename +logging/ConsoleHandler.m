@@ -2,7 +2,7 @@ classdef ConsoleHandler < logging.Handler
     %CONSOLEHANDLER
     
     properties
-        useColors (1,1) logical = true
+        useColors (1,1) logical = false
     end
     
     methods

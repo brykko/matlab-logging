@@ -92,11 +92,13 @@ classdef FileHandler < logging.Handler
             end
         end
         
-        function open(self)
+        function open(self, append)
+            
+            if nargin == 1, append = self.appendToFile; end
 
             if ~self.fileIsOpen
-                if self.appendToFile, mode = 'A'; else, mode = 'W'; end
-                self.logger.i('Opening file "%s", append=%u', self.filePath, self.appendToFile);
+                if append, mode = 'A'; else, mode = 'W'; end
+                self.logger.i('Opening file "%s", append=%u', self.filePath, append);
                 try
                     [self.fileId, msg] = fopen(self.filePath, mode);
                     if self.fileId == -1
@@ -112,6 +114,10 @@ classdef FileHandler < logging.Handler
         end
         
         function flush(self)
+            % Flush the write buffer by closing and reopening in append mode
+            self.logger.i('Flushing buffer');
+            self.close();
+            self.open(true);
         end
         
     end
