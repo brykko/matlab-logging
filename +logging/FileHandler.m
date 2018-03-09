@@ -83,9 +83,9 @@ classdef FileHandler < logging.Handler
         function close(self)
             if self.fileIsOpen
                 try
+                    self.logger.i('Closing log file "%s"', self.filePath);
                     fclose(self.fileId);
                     self.fileIsOpen = false;
-                    self.logger.i('Closed log file "%s"', self.filePath);
                 catch ex
                     self.logger.e(ex.message);
                 end
